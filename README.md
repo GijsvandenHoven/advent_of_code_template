@@ -33,7 +33,7 @@ The reported solution will be printed to standard out, letting you copy it into 
 
 If your answer is correct, AoC reveals a second part of the puzzle. This is usually a non-trivial twist of the problem. Implement it in `v2` just like you did for `v1`.
 
-To enable benchmarking, the `v1()` and `v2()` functions must be immutable. Hence, they are marked const. If you need to mutate any parsed-in information, you must make a local copy of it.
+To enable benchmarking, the `v1()` and `v2()` functions must be immutable. Hence, they are marked const. If you need to mutate any information that was parsed into member variables by `parse()`, you must make a local copy of it, or consider a different approach.
 
 ## When you are running a solution for a day
 
