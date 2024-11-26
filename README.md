@@ -22,7 +22,7 @@ A basic example of this is given in the template by already creating Day 1 with 
 If you need to use extra files, remember to update the `CMakeLists.txt`. You would need to update the `add_executable` line to reference any newly added source (`.cpp`) files.*
 
 First implement a solution for parsing the program input. 
-The superclass creates an input stream of the `dayN.txt` file of the folder it is in, and hands it to this function.
+The superclass creates an input stream of the `dayN.txt` file of the folder it is in, and hands it to the `parse` function of your `dayN` class.
 The purpose of this function is usually to convert the text file into relevant member variables you created for solving this problem. This is also why it is not marked `const`.
 
 When this is done, you can implement a solution to the initial puzzle of the day in the v1() function.
