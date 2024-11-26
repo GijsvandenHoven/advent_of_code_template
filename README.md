@@ -25,7 +25,7 @@ First implement a solution for parsing the program input.
 The superclass creates an input stream of the `dayN.txt` file of the folder it is in, and hands it to the `parse` function of your `dayN` class.
 The purpose of this function is usually to convert the text file into relevant member variables you created for solving this problem. This is also why it is not marked `const`.
 
-When this is done, you can implement a solution to the initial puzzle of the day in the v1() function.
+When this is done, you can implement a solution to the initial puzzle of the day in the `v1()` function.
 To 'return' a solution, use the superclass `reportSolution` function. 
 The only requirement of this template function is that the reported object has an `operator<<` for `std::cout` operations, but usually AoC only requires you to report numbers or strings. 
 
