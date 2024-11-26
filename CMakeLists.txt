@@ -8,9 +8,7 @@ if (OPENMP_FOUND)
     message("OpenMP FOUND")
 endif()
 
-add_executable(main main.cpp util/Day.cpp
-        day_defs.hpp
-        day_01/day_1.hpp)
+add_executable(main main.cpp util/Day.cpp)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp") # This wasn't always necessary but now there's OpenMP linker errors if I do not do this.
 target_compile_options(main PUBLIC -O3) # godbolt seems to indicate things like std::fill does not use AVX registers without O3 for GCC. Cringe!
 
