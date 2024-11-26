@@ -1,5 +1,7 @@
 #pragma once
 
+// This is where you would write your solution. You will probably not need a .cpp file.
+
 #include <iostream>
 
 #include "../util/Day.hpp"
