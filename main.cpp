@@ -38,45 +38,7 @@ std::map<int, std::function<std::unique_ptr<Day>()>> day_constructor_functions =
         { 25,[](){ return std::make_unique<Day25::Day25>(); } },
 };
 
-int benchEverything() {
-    std::vector<std::array<BenchmarkStats, 3>> stats(day_constructor_functions.size());
-    int defaultSampleSize = 10000;
-    static const std::map<int, int> sampleSizeOverrides {
-            // {3, 1000}, // example: adjust sampling if your solution would be too slow with the default.
-    };
-    auto getSampleSize = [defaultSampleSize](int day){
-        auto iter =
-            std::ranges::find_if(
-                sampleSizeOverrides,
-                [day](auto& pair){ return pair.first == day; }
-        );
-
-        if (iter != sampleSizeOverrides.end()) {
-            return iter->second;
-        }
-        return defaultSampleSize;
-    };
-
-    int i = 1;
-    for (auto& [day, ctor] : day_constructor_functions) {
-        // run benchmark with the specified sample count and less reporting on prints, do not cout resulting stat objects.
-        int sampleCount = getSampleSize(day);
-        std::cout << "Day " << day << ". (" << sampleCount << "x)\n";
-        ctor()->benchmark(stats[i-1], sampleCount, 0.10, false);
-        i++;
-    }
-
-    i = 1;
-    for (auto& statblock : stats) {
-        auto& [parse, v1, v2] = statblock;
-        std::cout << "Day " << i << " parse mean (median): " << parse.format(parse.mean()) << " (" << parse.format(parse.median()) << "). Sample Size: " << parse.n_samples() << "\n";
-        std::cout << "Day " << i << " part 1 mean (median): " << v1.format(v1.mean()) << " (" << v1.format(v1.median()) << "). Sample Size: " << v1.n_samples() << "\n";
-        std::cout << "Day " << i << " part 2 mean (median): " << v2.format(v2.mean()) << " (" << v2.format(v2.median()) << "). Sample Size: " << v2.n_samples() << "\n";
-        i++;
-    }
-
-    return static_cast<int>(ExitCodes::OK);
-}
+int benchEverything();
 
 int main(int argc, char** argv) {
     if (argc < 3) {
@@ -116,6 +78,48 @@ int main(int argc, char** argv) {
     } else {
         std::cout << "unknown mode '" << mode << "'\n";
         return static_cast<int>(ExitCodes::BAD_INPUT);
+    }
+
+    return static_cast<int>(ExitCodes::OK);
+}
+
+// Runs every day in sequence and gets performance stats for each. You cannot use this until all days are implemented.
+int benchEverything() {
+    std::vector<std::array<BenchmarkStats, 3>> stats(day_constructor_functions.size());
+    int defaultSampleSize = 10000;
+
+    static const std::map<int, int> sampleSizeOverrides {
+        // {3, 1000}, // example: hardcoded adjusted sampling for if your solution would be too slow with the default.
+    };
+    auto getSampleSize = [defaultSampleSize](int day){
+        auto iter =
+            std::ranges::find_if(
+                sampleSizeOverrides,
+                [day](auto& pair){ return pair.first == day; }
+        );
+
+        if (iter != sampleSizeOverrides.end()) {
+            return iter->second;
+        }
+        return defaultSampleSize;
+    };
+
+    int i = 1;
+    for (auto& [day, ctor] : day_constructor_functions) {
+        // run benchmark with the specified sample count and less reporting on prints, do not cout resulting stat objects.
+        int sampleCount = getSampleSize(day);
+        std::cout << "Day " << day << ". (" << sampleCount << "x)\n";
+        ctor()->benchmark(stats[i-1], sampleCount, 0.10, false);
+        i++;
+    }
+
+    i = 1;
+    for (auto& statblock : stats) {
+        auto& [parse, v1, v2] = statblock;
+        std::cout << "Day " << i << " parse mean (median): " << parse.format(parse.mean()) << " (" << parse.format(parse.median()) << "). Sample Size: " << parse.n_samples() << "\n";
+        std::cout << "Day " << i << " part 1 mean (median): " << v1.format(v1.mean()) << " (" << v1.format(v1.median()) << "). Sample Size: " << v1.n_samples() << "\n";
+        std::cout << "Day " << i << " part 2 mean (median): " << v2.format(v2.mean()) << " (" << v2.format(v2.median()) << "). Sample Size: " << v2.n_samples() << "\n";
+        i++;
     }
 
     return static_cast<int>(ExitCodes::OK);
